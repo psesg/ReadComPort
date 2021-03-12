@@ -12,10 +12,7 @@ else:
     for p in ports:
         print ("\tport='{}'".format(p))
 
-#ser1 = serial.Serial('COM3', 9600, timeout=1,   parity=serial.PARITY_NONE)
-#ser1.close()
-ser2 = serial.Serial('COM4', 115200, timeout=None,   parity=serial.PARITY_NONE, xonxoff=False, rtscts=True,dsrdtr=True)
-#print("connected to: " + ser1.name)
+ser2 = serial.Serial('COM5', 115200, timeout=None,   parity=serial.PARITY_NONE, xonxoff=False, rtscts=True,dsrdtr=True)
 print("Will wait connection and data on: " + ser2.name)
 
 need2read = 0
@@ -50,13 +47,19 @@ while k > 0:
             file = open("leaked.rar", "wb")
             start = datetime.datetime.now()
             ind = 0
+            brl = 0
     else:
         #print("Body", k, l, type(l))
         file.write(l)
         k = k - 1
         ind = ind + 1
         if ind > 1024 and ind % 1024 == 0:
-            print("*",end="")
+            brl = brl + 1
+            if brl > 65:
+                print("*")
+                brl = 0
+            else:
+                print("*",end="")
 file.close()
 finish = datetime.datetime.now()
 elapse = finish - start

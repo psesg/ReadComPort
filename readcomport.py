@@ -13,11 +13,9 @@ else:
     for p in ports:
         print ("\tport='{}'".format(p))
 
-ser = serial.Serial('COM6', baudrate=19200, timeout=None,   parity=serial.PARITY_NONE, dsrdtr=True,  rtscts=True) #, xonxoff=False, rtscts=True,dsrdtr=True)
+ser = serial.Serial('COM6', baudrate=115200, timeout=None, bytesize=8, stopbits=1,  parity=serial.PARITY_NONE) #, xonxoff=False, rtscts=True,dsrdtr=True)
+print("\n{}: baudrate={} parity={} bytesize={} stopbits={} timeout={}".format(ser.name,ser.baudrate,ser.parity,ser.bytesize,ser.stopbits,ser.timeout))
 print("Will wait connection and data on: " + ser.name)
-print("baudrate={} parity={} bytesize={} stopbits={} timeout={}".format(ser.baudrate,ser.parity,ser.bytesize,ser.stopbits,ser.timeout))
-print("xonxoff={} sync cts={} sync dsr={} dsrdtr={} rtscts={}".format(ser.xonxoff,ser.cts,ser.dsr,ser.dsrdtr,ser.rtscts))
-print("dtr={} rts={}".format(ser.dtr,ser.rts ))
 
 need2read = 0
 k = 8
@@ -61,11 +59,24 @@ elapse = finish - start
 
 print("\nGot Body {} bytes, file leaked.rar created".format(need2read))
 print ("File size: {} elapsed time:  {} s ({} kB/ses)".format(need2read, elapse.total_seconds(),need2read/1024.0/elapse.total_seconds() ))
-# copy size.txt+astropy.rar /b itog.bin /b
-# mode com3 baud=115200 data=8 parity=n xon=off odsr=on octs=on dtr=on rts=on to=off
-# mode com3 baud=19200 parity=n data=8 stop=1 to=off xon=off odsr=off octs=off dtr=on rts=on idsr=off
-# copy itog.bin /b com3 /b
 
-# virt ser = serial.Serial('COM6', baudrate=19200, timeout=None,   parity=serial.PARITY_NONE, dsrdtr=True,  rtscts=True)
-# virt mode com4 baud=19200 parity=n data=8 stop=1 to=off xon=off odsr=on octs=off dtr=on rts=on idsr=off octs=on
-# virt
+# usb-rs-232-NullModemCable-rs-232-usb:
+# copy size.txt+astropy.rar /b itog.bin /b
+#
+#     mode com3 baud=115200 parity=n data=8
+#     Скорость:              115200
+#     Четность:              None
+#     Биты данных:           8
+#     Стоповые биты:         1
+#     Таймаут:               OFF
+#     XON/XOFF:              OFF
+#     Синхронизация CTS:     OFF
+#     Синхронизация DSR:     OFF
+#     Чувствительность DSR:  OFF
+#     Цепь DTR:              ON
+#     Цепь RTS:              ON
+#
+# copy itog.bin /b com3 /b
+#
+#Got Body 18349 bytes, file leaked.rar created
+#File size: 18349 elapsed time:  1.598731 s (11.208230348007264 kB/ses)

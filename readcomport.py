@@ -13,7 +13,7 @@ else:
     for p in ports:
         print ("\tport='{}'".format(p))
 
-ser = serial.Serial('COM6', baudrate=115200, timeout=None, bytesize=8, stopbits=1,  parity=serial.PARITY_NONE) #, xonxoff=False, rtscts=True,dsrdtr=True)
+ser = serial.Serial('COM3', baudrate=115200, timeout=None, bytesize=8, stopbits=serial.STOPBITS_ONE,  parity=serial.PARITY_NONE) #, xonxoff=False, rtscts=True,dsrdtr=True)
 print("\n{}: baudrate={} parity={} bytesize={} stopbits={} timeout={}".format(ser.name,ser.baudrate,ser.parity,ser.bytesize,ser.stopbits,ser.timeout))
 print("Will wait connection and data on: " + ser.name)
 
@@ -54,6 +54,7 @@ while k > 0:
             else:
                 print("*",end="")
 file.close()
+ser.close()
 finish = datetime.datetime.now()
 elapse = finish - start
 

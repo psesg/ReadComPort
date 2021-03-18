@@ -18,7 +18,7 @@ def progbar(curr, total, full_progbar):
     filled_progbar = round(frac*full_progbar)
     print('\r', '#'*filled_progbar + '-'*(full_progbar-filled_progbar), '[{:>7.2%}]'.format(frac), end='')
 
-ser = serial.Serial('COM5', baudrate=921600, timeout=None, bytesize=8, stopbits=serial.STOPBITS_ONE,  parity=serial.PARITY_NONE) #, xonxoff=False, rtscts=True,dsrdtr=True)
+ser = serial.Serial('COM5', baudrate=19200, timeout=None, bytesize=8, stopbits=serial.STOPBITS_ONE,  parity=serial.PARITY_NONE) #, xonxoff=False, rtscts=True,dsrdtr=True)
 print("\n{}: baudrate={} parity={} bytesize={} stopbits={} timeout={}".format(ser.name,ser.baudrate,ser.parity,ser.bytesize,ser.stopbits,ser.timeout))
 print("Will wait connection and data on: " + ser.name)
 

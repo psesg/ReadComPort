@@ -18,12 +18,12 @@ def progbar(curr, total, full_progbar):
     filled_progbar = round(frac*full_progbar)
     print('\r', '#'*filled_progbar + '-'*(full_progbar-filled_progbar), '[{:>7.2%}]'.format(frac), end='')
 
-ser = serial.Serial('COM5', baudrate=115200, timeout=None, bytesize=8, stopbits=serial.STOPBITS_ONE,  parity=serial.PARITY_NONE) #, xonxoff=False, rtscts=True,dsrdtr=True)
+ser = serial.Serial('COM5', baudrate=19200, timeout=None, bytesize=8, stopbits=serial.STOPBITS_ONE,  parity=serial.PARITY_NONE) #, xonxoff=False,  rtscts=True,dsrdtr=True)
 print("\n{}: baudrate={} parity={} bytesize={} stopbits={} timeout={}".format(ser.name,ser.baudrate,ser.parity,ser.bytesize,ser.stopbits,ser.timeout))
 print("Will wait connection and data on: " + ser.name)
 ser.flushInput()
 
-start = datetime.datetime.now()
+
 need2read = 8
 headON = True
 head=b''
@@ -32,28 +32,27 @@ while need2read > 0:
     if (ser.inWaiting() > 0):  # if incoming bytes are waiting to be read from the serial input buffer
         data = ser.read(ser.inWaiting())
         readed=len(data)
-        print(readed,data.hex())
+        #print(readed,data.hex())
         if headON:
             head = head + data
             if len(head) > 8:
                 need2readtotal = int(head[:8].decode("ansi"))
                 print("Get 8 bytes header, wait get Body file with size = {}".format(need2readtotal))
                 file = open("zenit_leakednb.rar", "wb")
+                start = datetime.datetime.now()
                 file.write(head[8:])
-                k = k + len(head[8:])
-                print("file.write {}".format(k))
+                k =  len(head[8:])
+                #print(k)
                 headON = False
-                need2read = need2readtotal - len(head[8:])
-                print("need2read = {} = {} - {}".format(need2read, need2readtotal,len(head[8:] )))
+                need2read = need2readtotal  - len(head[8:])
+                #print("need2read = {} = {} - {}".format(need2read, need2readtotal,len(head[8:] )))
         else:
             file.write(data)
-            k = k + len(data)
-            print("file.write else {}".format(len(data)))
-            need2read = need2read - readed
-            print("need2read={} k={}".format(need2read, k))
-
-
-            #progbar(need2read, need2readtotal, 20)
+            k =  len(data)
+            #print("file.write else {}".format(len(data)))
+            need2read = need2read - len(data)
+            #print(k)
+            progbar(need2read, need2readtotal, 40)
 
 file.close()
 ser.close()
